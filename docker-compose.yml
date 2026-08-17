@@ -1,6 +1,8 @@
 version: '3.8'
 services:
-  vector-cache:
+  app:
     build: .
+    container_name: vector-cache-redis
     ports:
-      - '8000:8000'
+      - "8000:8000"
+    restart: unless-stopped
