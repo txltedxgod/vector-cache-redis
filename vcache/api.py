@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+
 from vcache.cache import SemanticCache
 
 app = FastAPI(title="Vector Semantic Cache", version="0.1.0")

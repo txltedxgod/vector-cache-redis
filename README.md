@@ -1,41 +1,19 @@
 # vector-cache-redis
 
-High-throughput semantic vector cache for LLM API cost reduction with cosine similarity deduplication.
+[![CI](https://github.com/txltedxgod/vector-cache-redis/actions/workflows/ci.yml/badge.svg)](https://github.com/txltedxgod/vector-cache-redis/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python 3.12](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 
-## Architecture & Design
+High-throughput semantic vector cache in Python 3.11+ for LLM API cost reduction with deterministic feature-hashed embeddings, `OrderedDict` `O(1)` LRU eviction, monotonic TTL expiration, namespace isolation, and pipeline batch endpoints.
 
-Built with modern Python 3.11 asynchronous patterns, strict Pydantic v2 schemas, and standard 12-factor application conventions.
-
-### Directory Layout
-
-```
-├── src/
-│   ├── api/v1/         # Versioned REST controllers
-│   ├── core/           # Settings, structured logging & domain exceptions
-│   ├── schemas/        # Request / Response validation schemas
-│   ├── services/       # Core business logic and storage state machines
-│   └── main.py         # Application lifespan & middleware integration
-├── tests/
-│   ├── conftest.py     # Shared fixtures and mock clients
-│   └── test_service.py # Automated pytest test cases
-├── Dockerfile          # Multi-stage production container
-├── Makefile            # Standard developer commands (lint, test, run)
-└── pyproject.toml      # Tooling configuration (Ruff, mypy, pytest)
-```
+## Features
+- **Semantic Feature Hashing**: L2-normalized word unigrams + character trigrams compute meaningful cosine similarity for paraphrased queries (zero external model overhead).
+- **LRU + TTL State Machine**: `O(1)` access reordering, capacity-bounded eviction, automatic expiration sweeps, and hit-rate / eviction telemetry.
+- **Namespace Isolation & Pipelining**: Isolate caches by tenant or LLM model (`namespace`) and execute batch `pipeline/store` & `pipeline/lookup`.
+- **REST API**: `/health`, `POST /api/v1/cache/store`, `POST /api/v1/cache/lookup`, `POST /api/v1/cache/pipeline/{store,lookup}`, `DELETE /api/v1/cache`, `GET /api/v1/cache/stats`.
 
 ## Quick Start
-
 ```bash
-make install
-make test
-make run
+ruff check .
+pytest -v tests/
 ```
-
-## Production Container
-
-```bash
-docker compose up -d --build
-```
-
-## License
-MIT License
