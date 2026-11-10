@@ -48,6 +48,8 @@ ignore = ["E501"]
 minversion = "7.0"
 addopts = "-ra -q --strict-markers"
 testpaths = ["tests"]
+pythonpath = ["."]
+asyncio_default_fixture_loop_scope = "function"
 python_files = ["test_*.py"]
 
 [tool.mypy]
